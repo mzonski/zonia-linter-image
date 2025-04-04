@@ -13,6 +13,14 @@
         nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed (system: f nixpkgs.legacyPackages.${system});
     in
     {
+      devShells = eachSystem (pkgs: {
+        default = pkgs.mkShell {
+          packages = [
+            pkgs.nodejs_23
+          ];
+        };
+      });
+
       packages = eachSystem (pkgs: {
         helloWorld = pkgs.dockerTools.buildImage (import ./docker-images/helloWorld.nix pkgs);
         default = self.packages.${pkgs.system}.helloWorld;
