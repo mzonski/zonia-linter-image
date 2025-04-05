@@ -20,10 +20,13 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
+    "allowJs": true,
     "target": "ESNext",
     "useDefineForClassFields": true
   },
   "include": [
+    ".eslintrc.cjs",
+    "eslintoutput.config.js",
     "src/*.tsx",
     "src/*.ts"
   ]
