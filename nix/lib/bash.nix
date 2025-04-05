@@ -1,15 +1,14 @@
 { }:
 {
-  # Early exit bash header
   userBashHeaderEE = ''
     #!/usr/bin/env bash
-    set -e
+    set -eo pipefail
 
   '';
 
   binBashHeaderEE = ''
     #!/bin/bash
-    set -e
+    set -eo pipefail
 
   '';
 

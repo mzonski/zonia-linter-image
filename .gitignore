@@ -2,4 +2,6 @@ node_modules/
 **/node_modules/
 
 .*/
-js-packages/*/lint-warnings.xml
+**/lint-warnings.xml
+
+result

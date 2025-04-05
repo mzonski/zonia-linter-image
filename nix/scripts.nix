@@ -1,11 +1,15 @@
 { pkgs, ... }:
 let
-  inherit (import ../lib/dockerApp.nix pkgs) generateRuntime;
+  inherit (import ./lib/dockerRuntime.nix pkgs) generateRuntime;
   inherit
     (generateRuntime {
       image_name = "linter-image";
-      mount_local = "$(git rev-parse --show-toplevel)/js-packages/ugly-ts";
-      mount_remote = "/app/linter/src";
+      mounts = [
+        {
+          local = "$(git rev-parse --show-toplevel)/ugly-testcode";
+          remote = "/app/linter/src";
+        }
+      ];
     })
     run
     buildAndRun

@@ -13,7 +13,7 @@
   ];
 
   mkDerivation = {
-    src = ../.;
+    src = ../linter;
   };
 
   deps =

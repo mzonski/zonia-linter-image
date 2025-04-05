@@ -1,9 +1,10 @@
 {
-  description = "A JS/TS Linter image built with NixOS";
+  description = "A JS/TS Linter image built with Nix";
 
   inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     dream2nix.url = "github:nix-community/dream2nix";
-    nixpkgs.follows = "dream2nix/nixpkgs";
+    dream2nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -21,10 +22,10 @@
     {
       devShells = eachSystem (pkgs: {
         default = self.devShells.${pkgs.system}.linterNode;
-        linterNode = import ./js-packages/linter/nix/devShell.nix {
+        linterNode = import ./nix/devShell.nix {
           inherit (pkgs) mkShell;
           linter = self.packages.${pkgs.system}.linter-node;
-          nodejs = pkgs.nodejs_22;
+          nodejs = pkgs.nodejs_23;
         };
       });
 
@@ -34,7 +35,7 @@
           linter = dream2nix.lib.evalModules {
             packageSets.nixpkgs = nixpkgs.legacyPackages.${pkgs.system};
             modules = [
-              ./js-packages/linter/nix/config.nix
+              ./nix/config.nix
               {
                 paths.projectRoot = ./.;
                 paths.projectRootFile = "flake.nix";
@@ -47,9 +48,9 @@
           default = self.packages.${pkgs.system}.linter-image;
 
           linter-image = pkgs.dockerTools.buildImage (
-            import ./docker-images/linter.nix {
+            import ./nix/docker.nix {
               inherit pkgs linter;
-              nodejs = pkgs.nodejs_22;
+              nodejs = pkgs.nodejs_23;
             }
           );
           linter-node = linter;
@@ -59,7 +60,7 @@
       apps = eachSystem (pkgs: {
         default = self.apps.${pkgs.system}.buildAndRunLinterDocker;
 
-        inherit (import ./scripts/linter.nix pkgs)
+        inherit (import ./nix/scripts.nix pkgs)
           runLinterDocker
           buildLinterDocker
           buildAndRunLinterDocker

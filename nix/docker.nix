@@ -11,7 +11,7 @@ let
     lib
     stdenv
     ;
-  inherit (import ../lib/bash.nix { }) binBashHeader;
+  inherit (import ./lib/bash.nix { }) binBashHeader;
 
   debug = true;
   appPath = "/app/linter";
