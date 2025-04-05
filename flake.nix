@@ -46,7 +46,6 @@
         {
           default = self.packages.${pkgs.system}.linter-image;
 
-          hello-world-image = pkgs.dockerTools.buildImage (import ./docker-images/helloWorld.nix pkgs);
           linter-image = pkgs.dockerTools.buildImage (
             import ./docker-images/linter.nix {
               inherit pkgs linter;
@@ -60,7 +59,6 @@
       apps = eachSystem (pkgs: {
         default = self.apps.${pkgs.system}.buildAndRunLinterDocker;
 
-        inherit (import ./scripts/runDefaultDocker.nix pkgs) runDefault buildDefault;
         inherit (import ./scripts/linter.nix pkgs)
           runLinterDocker
           buildLinterDocker
